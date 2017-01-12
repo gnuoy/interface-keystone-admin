@@ -55,7 +55,12 @@ class KeystoneRequires(RelationBase):
                 'service_username': conv.get_remote('service_username'),
                 'service_password': conv.get_remote('service_password'),
                 'service_tenant_name': conv.get_remote('service_tenant_name'),
-                'service_region': conv.get_remote('service_region')
+                'service_project_name': conv.get_remote('service_tenant_name'),
+                'service_region': conv.get_remote('service_region'),
+                'api_version': conv.get_remote('api_version'),
+                'service_project_name': conv.get_remote('service_project_name'),
+                'service_user_domain_name': conv.get_remote('service_user_domain_name'),
+
             }
         else:
             return {}
