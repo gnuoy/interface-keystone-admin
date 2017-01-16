@@ -47,9 +47,10 @@ class KeystoneRequires(RelationBase):
              u'service_region': u'RegionOne'}
         """
         convs = self.conversations()
+        creds = {}
         if len(convs) > 0:
             conv = convs[0]
-            return {
+            creds = {
                 'service_hostname': conv.get_remote('service_hostname'),
                 'service_port': conv.get_remote('service_port'),
                 'service_username': conv.get_remote('service_username'),
@@ -57,13 +58,17 @@ class KeystoneRequires(RelationBase):
                 'service_tenant_name': conv.get_remote('service_tenant_name'),
                 'service_project_name': conv.get_remote('service_tenant_name'),
                 'service_region': conv.get_remote('service_region'),
-                'api_version': conv.get_remote('api_version'),
-                'service_project_name': conv.get_remote('service_project_name'),
-                'service_user_domain_name': conv.get_remote('service_user_domain_name'),
 
             }
-        else:
-            return {}
+            api_version = conv.get_remote('api_version')
+            if api_version:
+                creds['api_version'] = api_version
+                if api_version == '3':
+                    creds['service_project_name'] = conv.get_remote(
+                        'service_project_name')
+                    creds['service_user_domain_name'] = conv.get_remote(
+                        'service_user_domain_name')
+        return creds
 
     def auth_data_complete(self):
         data = self.credentials()
